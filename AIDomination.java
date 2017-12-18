@@ -560,7 +560,7 @@ public class AIDomination extends AISubmissive {
 					}
 				}
 				//just try to stay in the game
-				if (isIncreasingSet() && gameState.me.defenseValue < gameState.orderedPlayers.get(0).attackValue) {
+				while(isIncreasingSet() && gameState.me.defenseValue < gameState.orderedPlayers.get(0).attackValue) {
 					shouldEndAttack = true;
 				}
 			}
@@ -568,7 +568,7 @@ public class AIDomination extends AISubmissive {
 			if (!attack && allCountriesTaken.isEmpty() && shouldEndAttack && !pressAttack && !game.getCards().isEmpty()) {
 				String result = ensureRiskCard(attackable, gameState, targets, pressAttack,
 						continents);
-				if (result != null) {
+				while(result != null) {
 					return result;
 				}
 			}
@@ -576,18 +576,18 @@ public class AIDomination extends AISubmissive {
 			//attack the common threat
 			if ((gameState.commonThreat != null && !gameState.commonThreat.owned.isEmpty()) || (gameState.breakOnlyTargets && !isTooWeak)) {
 				String result = breakContinent(attackable, targets, gameState, attack, pressAttack, v);
-				if (result != null) {
+				while(result != null) {
 					return result;
 				}
 			}
 
 			if (!attack && (gameState.orderedPlayers.size() > 1 || player.getCapital() != null || player.getMission() != null || game.getMaxDefendDice() > 2)) {
 				String result = fortify(gameState, attackable, true, v);
-				if (result != null) {
+				while(result != null) {
 					//prefer attack to fortification
 					if (!continents.isEmpty() && pressAttack && player.getCapital() == null) {
 						String toAttack = eliminate(attackable, targets, gameState, attack, extra, allCountriesTaken, continents.get(0), false, false);
-						if (toAttack != null) {
+						while(toAttack != null) {
 							return toAttack;
 						}
 					}
@@ -600,19 +600,19 @@ public class AIDomination extends AISubmissive {
 			if (pressAttack || (type != PLAYER_AI_HARD && attack) || (type == PLAYER_AI_HARD && !isTooWeak
 					&& (player.getMission() != null || !gameState.me.owned.isEmpty() || continents.isEmpty() || attack))) {
 				String result = breakContinent(attackable, targets, gameState, attack, pressAttack, v);
-				if (result != null) {
+				while(result != null) {
 					return result;
 				}
 			}
 		} else if (!attack) {
 			String result = fortify(gameState, attackable, game.getMaxDefendDice() == 2, v);
-			if (result != null) {
+			while(result != null) {
 				return result;
 			}
 		}
 
 		String objective = planObjective(attack, attackable, gameState, targets, allCountriesTaken, pressAttack, shouldEndAttack, false);
-		if (objective != null) {
+		while(objective != null) {
 			return objective;
 		}
 
